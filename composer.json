@@ -1,0 +1,37 @@
+{
+    "name": "dragonying/pageSpider",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "fangyingzhong",
+            "email": "qfdy6688@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "zfy\\": "src/"
+        },
+        "files": [
+        ]
+    },
+    "require": {
+        "jaeger/querylist": "^4.1",
+        "jaeger/querylist-phantomjs": "^4.0",
+        "jaeger/querylist-puppeteer": "^4.0",
+        "jaeger/querylist-curl-multi": "^4.0",
+        "jaeger/querylist-rule-baidu": "^4.0",
+        "jaeger/querylist-rule-google": "^4.0",
+        "wapmorgan/unified-archive": "^1.0",
+        "chumper/zipper": "^1.0",
+        "phpmailer/phpmailer": "^6.1",
+        "spatie/browsershot": "^3.37",
+        "mpdf/mpdf": "^8.0"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
+    }
+}
