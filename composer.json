@@ -16,6 +16,7 @@
         ]
     },
     "require": {
+        "php": ">=7.0.1",
         "jaeger/querylist": "^4.1",
         "jaeger/querylist-phantomjs": "^4.0",
         "jaeger/querylist-puppeteer": "^4.0",

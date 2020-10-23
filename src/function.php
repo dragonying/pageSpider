@@ -7,22 +7,45 @@
  */
 
 //获取地址
-function getLink($domain,$url){
+function getLink($req,$url){
     $link = '';
-    if(!preg_match('/^https*:\/\//',$domain)){
+    if(!preg_match('/^https*:\/\//',$req)){
         return $link;
     }
-    $domain = rtrim($domain,'/');
+    $req = rtrim($req,'/');
+    list( $host, $domain, $path, $scheme) = parseUrl($req);
     if(preg_match('/^(\/\/)\w+/',$url)){
         $link = 'http:'.$url;
-    }elseif(preg_match('/^((\/)\w+)|((\.\/)\w+)/',$url)){
+    }elseif(preg_match('/^((\/)\w+)/',$url)){
         $link = $domain.trim($url,' .');
+    }elseif(preg_match('/^((\.\/)\w+)/',$url)){
+        $link = $req.trim($url,' .');
     }elseif (preg_match('/^(https*)/',$url)){
         $link = $url;
-    }elseif(preg_match('/^[^.\/(javascript)#]*\w+/',$url)){
-        $link  = $domain.'/'.$url;
+    }elseif(preg_match('/^((#)|(javascript)|(\/)|(about:blank))/i',$url)){
+        return $link;
+    }elseif(preg_match('/^(\w)+/',$url)){
+        $link  = $req.'/'.$url;
     }
     return $link;
+}
+
+/**解析url
+ * @param $url
+ * @return array
+ */
+function parseUrl($url){
+    $urlParse = parse_url(rtrim($url, '/'));
+    $host = $urlParse['host'] ?? '';
+    $scheme = $urlParse['scheme'] ?? '';
+    $domain = $scheme . '://' . $host;
+    $path = $urlParse['path'] ?? 'index.html';
+    return [
+        $host,
+        $domain,
+        $path,
+        $scheme
+    ];
 }
 
 /**文件备份
@@ -319,4 +342,24 @@ function spiderLog($fileName,$link=null)
         return file_put_contents($fileName, $dataArr) > 0;
     }
     return true;
+}
+
+function base64_image_content($base64_image_content,$path){
+    //匹配出图片的格式
+    if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)){
+        $type = $result[2];
+        $new_file = $path."/".date('Ymd',time())."/";
+        if(!file_exists($new_file)){
+            //检查是否有该文件夹，如果没有就创建，并给予最高权限
+            mkdir($new_file, 0700);
+        }
+        $new_file = $new_file.time().".{$type}";
+        if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))){
+            return '/'.$new_file;
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
 }

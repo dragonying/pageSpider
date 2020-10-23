@@ -1,3 +1,6 @@
 vendor
 src/demo
 src/log
+src/video
+.idea
+.idea/

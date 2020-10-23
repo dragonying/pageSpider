@@ -1,0 +1,6 @@
+{
+  "target": "http://tlias-stu.boxuegu.com/#/login",
+  "demo_save_dir_path":"demo",
+  "log_save_dir_path":"log",
+  "ignore_history": "true"
+}
